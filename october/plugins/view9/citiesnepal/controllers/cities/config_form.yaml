@@ -1,0 +1,10 @@
+name: Cities
+form: $/view9/citiesnepal/models/city/fields.yaml
+modelClass: View9\Citiesnepal\Models\City
+defaultRedirect: view9/citiesnepal/cities
+create:
+    redirect: 'view9/citiesnepal/cities/update/:id'
+    redirectClose: view9/citiesnepal/cities
+update:
+    redirect: view9/citiesnepal/cities
+    redirectClose: view9/citiesnepal/cities

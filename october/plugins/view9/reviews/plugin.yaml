@@ -1,0 +1,6 @@
+plugin:
+    name: 'view9.reviews::lang.plugin.name'
+    description: 'view9.reviews::lang.plugin.description'
+    author: View9
+    icon: oc-icon-star
+    homepage: ''

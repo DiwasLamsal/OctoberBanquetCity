@@ -1,0 +1,10 @@
+columns:
+    name:
+        label: District
+        type: text
+        searchable: true
+        sortable: true
+    province_id:
+        label: Province
+        type: number
+        searchable: false

@@ -1,0 +1,11 @@
+columns:
+    name:
+        label: City
+        type: text
+        searchable: true
+        sortable: true
+    district_id:
+        label: district
+        type: number
+        searchable: true
+        sortable: true

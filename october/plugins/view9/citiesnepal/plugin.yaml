@@ -1,0 +1,34 @@
+plugin:
+    name: 'view9.citiesnepal::lang.plugin.name'
+    description: 'view9.citiesnepal::lang.plugin.description'
+    author: View9
+    icon: oc-icon-road
+    homepage: ''
+navigation:
+    Cities:
+        label: Cities
+        url: view9/citiesnepal/cities
+        icon: icon-road
+        sideMenu:
+            cities:
+                label: Cities
+                url: view9/citiesnepal/cities
+                icon: icon-road
+            districts:
+                label: Districts
+                url: view9/citiesnepal/districts
+                icon: icon-location-arrow
+            Provinces:
+                label: Provinces
+                url: view9/citiesnepal/provinces
+                icon: icon-adjust
+permissions:
+    view9.citiesnepal.manage_cites:
+        tab: 'view9.citiesnepal::lang.manage.cities'
+        label: 'view9.citiesnepal::lang.manage.cities'
+    view9.citiesnepal.manage_districts:
+        tab: 'view9.citiesnepal::lang.manage.districts'
+        label: 'view9.citiesnepal::lang.manage.districts'
+    view9.citiesnepal.manage_provinces:
+        tab: 'view9.citiesnepal::lang.manage.provinces'
+        label: 'view9.citiesnepal::lang.manage.provinces'

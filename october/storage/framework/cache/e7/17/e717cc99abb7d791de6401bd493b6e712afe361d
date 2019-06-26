@@ -1,0 +1,80 @@
+1561542698a:1:{s:21:"featured-banquets.htm";a:9:{s:8:"fileName";s:21:"featured-banquets.htm";s:7:"content";s:1549:"title = "Featured Banquets"
+url = "/featured"
+layout = "master_front"
+is_hidden = 0
+==
+<?php
+use View9\Banquet\Models\Banquet;
+
+function onStart()
+{
+    $featured_banquets = Banquet::where('featured', 1)->get();
+    $this['featured_banquets'] = $featured_banquets;
+}
+?>
+==
+<section class="banquet-wrap">
+	<div class="container">
+				<h2>All Featured Banquets</h2>
+				<div class="row">
+{% for featured_banquet in featured_banquets %}
+					<div class="col-sm-3 custom-gutter">
+						<div class="banquet-wrap-box">
+				        <a href="{{ 'banquet-details'|page({id: featured_banquet.id, slug: featured_banquet.slug}) }}">
+						<img src="{{featured_banquet.banners[0].getPath()}}" class="img-fluid">
+						</a>
+						<a href="{{ 'banquet-details'|page({id: featured_banquet.id, slug: featured_banquet.slug}) }}">
+						<h4>{{ featured_banquet.name }}</h4>
+						</a>
+						<h5>{{ featured_banquet.address }}</h5>
+						<h5>Capacity:{{ featured_banquet.max_capacity }} Max</h5>
+							<ul>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+{% endfor %}
+	</div>
+</section><!-- banquet-wrap -->";s:5:"mtime";i:1556085732;s:6:"markup";s:1270:"<section class="banquet-wrap">
+	<div class="container">
+				<h2>All Featured Banquets</h2>
+				<div class="row">
+{% for featured_banquet in featured_banquets %}
+					<div class="col-sm-3 custom-gutter">
+						<div class="banquet-wrap-box">
+				        <a href="{{ 'banquet-details'|page({id: featured_banquet.id, slug: featured_banquet.slug}) }}">
+						<img src="{{featured_banquet.banners[0].getPath()}}" class="img-fluid">
+						</a>
+						<a href="{{ 'banquet-details'|page({id: featured_banquet.id, slug: featured_banquet.slug}) }}">
+						<h4>{{ featured_banquet.name }}</h4>
+						</a>
+						<h5>{{ featured_banquet.address }}</h5>
+						<h5>Capacity:{{ featured_banquet.max_capacity }} Max</h5>
+							<ul>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+{% endfor %}
+	</div>
+</section><!-- banquet-wrap -->";s:4:"code";s:179:"use View9\Banquet\Models\Banquet;
+
+function onStart()
+{
+    $featured_banquets = Banquet::where('featured', 1)->get();
+    $this['featured_banquets'] = $featured_banquets;
+}";s:5:"title";s:17:"Featured Banquets";s:3:"url";s:9:"/featured";s:6:"layout";s:12:"master_front";s:9:"is_hidden";s:1:"0";}}

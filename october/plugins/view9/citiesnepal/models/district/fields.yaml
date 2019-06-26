@@ -1,0 +1,11 @@
+fields:
+    name:
+        label: District
+        span: auto
+        type: text
+    province_id:
+        label: Province
+        span: auto
+        showSearch: true
+        required: 1
+        type: dropdown

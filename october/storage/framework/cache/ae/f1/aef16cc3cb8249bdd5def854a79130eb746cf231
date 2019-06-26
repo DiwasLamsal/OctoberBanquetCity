@@ -1,0 +1,146 @@
+1561542698a:1:{s:10:"filter.htm";a:9:{s:8:"fileName";s:10:"filter.htm";s:7:"content";s:2535:"title = "Filter"
+url = "/filter"
+layout = "master_front"
+is_hidden = 0
+==
+<?php
+use View9\Banquet\Models\Banquet;
+use View9\citiesnepal\Models\Cities;
+function onStart()
+{
+ $this['cities'] = Cities::all();
+}
+
+function onFilterSubmit(){
+    $filtered_banquets = Banquet::where('featured', 1)->get();
+    $this['filtered_banquets'] = $filtered_banquets;
+}
+?>
+==
+<section class="bc-filter-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 nopadding">
+				<div class="bc-filter">
+					<ul>
+						<li>
+							<h3><img src="img/filter-icon.png" class="img-responsive"> Filters</h3>
+						</li>
+
+						<li>
+							<select class="form-control" id="select-city">
+                            <option selected disabled>Choose city</option>
+                            {% for city in cities%}
+                            <option value="{{city.id}}">{{city.name}}</option>
+                            {% endfor %}
+                            </select>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-md-6 bc-filter">
+				<h3 class="pull-right"><img src="img/sort-icon.png" class="img-responsive">Popularity: <span>High to Low</span></h3>
+			</div>
+
+		</div>
+	</div>
+</section>
+<section class="banquet-wrap">
+	<div class="container">
+				<h2>All Featured Banquets</h2>
+				<div class="row">
+                {% for filtered_banquet in filtered_banquets %}
+					<div class="col-sm-3 custom-gutter">
+						<div class="banquet-wrap-box">
+				        <a href="{{ 'banquet-details'|page({id: filtered_banquet.id, slug: filtered_banquet.slug}) }}">
+						<img src="{{filtered_banquet.banners[0].getPath()}}" class="img-fluid">
+						</a>
+						<a href="{{ 'banquet-details'|page({id: filtered_banquet.id, slug: filtered_banquet.slug}) }}">
+						<h4>{{ filtered_banquet.name }}</h4>
+						</a>
+						<h5>{{ filtered_banquet.address }}</h5>
+						<h5>Capacity:{{ filtered_banquet.max_capacity }} Max</h5>
+							<ul>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+                {% endfor %}
+	</div>
+</section>";s:5:"mtime";i:1556094871;s:6:"markup";s:2156:"<section class="bc-filter-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 nopadding">
+				<div class="bc-filter">
+					<ul>
+						<li>
+							<h3><img src="img/filter-icon.png" class="img-responsive"> Filters</h3>
+						</li>
+
+						<li>
+							<select class="form-control" id="select-city">
+                            <option selected disabled>Choose city</option>
+                            {% for city in cities%}
+                            <option value="{{city.id}}">{{city.name}}</option>
+                            {% endfor %}
+                            </select>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-md-6 bc-filter">
+				<h3 class="pull-right"><img src="img/sort-icon.png" class="img-responsive">Popularity: <span>High to Low</span></h3>
+			</div>
+
+		</div>
+	</div>
+</section>
+<section class="banquet-wrap">
+	<div class="container">
+				<h2>All Featured Banquets</h2>
+				<div class="row">
+                {% for filtered_banquet in filtered_banquets %}
+					<div class="col-sm-3 custom-gutter">
+						<div class="banquet-wrap-box">
+				        <a href="{{ 'banquet-details'|page({id: filtered_banquet.id, slug: filtered_banquet.slug}) }}">
+						<img src="{{filtered_banquet.banners[0].getPath()}}" class="img-fluid">
+						</a>
+						<a href="{{ 'banquet-details'|page({id: filtered_banquet.id, slug: filtered_banquet.slug}) }}">
+						<h4>{{ filtered_banquet.name }}</h4>
+						</a>
+						<h5>{{ filtered_banquet.address }}</h5>
+						<h5>Capacity:{{ filtered_banquet.max_capacity }} Max</h5>
+							<ul>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+                {% endfor %}
+	</div>
+</section>";s:4:"code";s:283:"use View9\Banquet\Models\Banquet;
+use View9\citiesnepal\Models\Cities;
+function onStart()
+{
+ $this['cities'] = Cities::all();
+}
+
+function onFilterSubmit(){
+    $filtered_banquets = Banquet::where('featured', 1)->get();
+    $this['filtered_banquets'] = $filtered_banquets;
+}";s:5:"title";s:6:"Filter";s:3:"url";s:7:"/filter";s:6:"layout";s:12:"master_front";s:9:"is_hidden";s:1:"0";}}

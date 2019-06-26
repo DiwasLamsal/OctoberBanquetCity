@@ -1,0 +1,473 @@
+1561542698a:1:{s:12:"homepage.htm";a:10:{s:8:"fileName";s:12:"homepage.htm";s:7:"content";s:7394:"title = "Banquet City"
+url = "/"
+layout = "master_front"
+meta_title = "Banquet City"
+is_hidden = 0
+==
+<?php
+use View9\Banquet\Models\Banquet;
+use View9\Citiesnepal\Models\City;
+use View9\Vendors\Models\Category;
+
+
+
+function onStart()
+{
+
+    $new_banquets = Banquet::orderBy('created_at', 'desc')->limit(4)->get();
+    $this['new_banquets'] = $new_banquets;
+    $this['new_banquets_count'] = Banquet::orderBy('created_at', 'desc')->count();
+    
+    $featured_banquets = Banquet::where('featured', 1)->get();
+    $this['featured_banquets'] = $featured_banquets;
+    $this['featured_banquets_count'] = $featured_banquets->count();
+    
+	$this['vendors_cat'] = Category::get();
+	
+	$kathmandu = City::where('name', 'Kathmandu')->get();
+	foreach($kathmandu as $ktm)
+		$banquets_in_kathmandu = Banquet::where('city_id', $ktm['id'])->get();
+	$this['banquets_in_kathmandu'] = $banquets_in_kathmandu;
+	$this['banquets_in_kathmandu_count'] = $banquets_in_kathmandu->count();
+}
+?>
+==
+<section class="banner">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="banner-slide">
+					<div class="flexslider">
+						<ul class="slides">
+							<li>
+								<img src="{{'assets/banners/1.jpg'|theme}}" class="img-responsive" alt="">
+							</li>
+							<li>
+								<img src="{{'assets/banners/2.jpg'|theme}}" class="img-responsive" alt="">
+							</li>
+							<li>
+								<img src="{{'assets/banners/3.jpg'|theme}}" class="img-responsive" alt="">
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="col-md-12 bq-ads">
+				 <img src="https://cdn5.vectorstock.com/i/1000x1000/22/69/coming-soon-label-design-vector-822269.jpg" width="100%" height="185px" alt="">
+				</div>
+				<div class="col-md-12 bq-ads">
+				   <img src="https://img.freepik.com/free-vector/opnening-soon-composition-with-flat-design_23-2147865115.jpg?size=338&ext=jpg" width="100%" height="185px" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
+</section> <!-- banner -->
+
+<section class="banquet-wrap">
+<div class="container">
+		<h2>Featured Banquets</h2>
+		<div class="row">
+		{% for featured_banquet in featured_banquets %}
+			<div class="col-sm-3">
+				<div class="banquet-wrap-box">
+				        <a href="{{ 'banquet-details'|page({id: featured_banquet.id, slug: featured_banquet.slug}) }}">
+						<img src="{{featured_banquet.banners[0].getPath()}}" class="img-fluid">
+						</a>
+						<a href="{{ 'banquet-details'|page({id: featured_banquet.id, slug: featured_banquet.slug}) }}">
+						<h4>{{ featured_banquet.name }}</h4>
+						</a>
+						<h5>{{ featured_banquet.address }}</h5>
+						<h5>Capacity:{{ featured_banquet.max_capacity }} Max</h5>
+					<ul>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+					</ul>
+					<div class="add-compare">
+						<a href="#">Add to Compare</a>
+					</div>
+				</div>
+			</div>
+            {% endfor %}
+			<div class="col-sm-12">
+				<a href="{{'featured-banquets'|page}}" class="show-all">Show All({{featured_banquets_count}})
+					<i class="material-icons">keyboard_arrow_right</i>
+				</a>
+			</div>
+		</div>
+</div>
+</section><!-- banquet-wrap -->
+
+<section class="banquet-wrap">
+<div class="container">
+		<h2>Recently Added Banquets</h2>
+		<div class="row">
+				{% for new_banquet in new_banquets %}
+			<div class="col-sm-3">
+				<div class="banquet-wrap-box">
+				        <a href="{{ 'banquet-details'|page({id: new_banquet.id, slug: new_banquet.slug}) }}">
+						<img src="{{new_banquet.banners[0].getPath()}}" class="img-fluid">
+						</a>
+						<a href="{{ 'banquet-details'|page({id: new_banquet.id, slug: new_banquet.slug}) }}">
+						<h4>{{ new_banquet.name }}</h4>
+						</a>
+						<h5>{{ new_banquet.address }}</h5>
+						<h5>Capacity:{{ new_banquet.max_capacity }} Max</h5>
+					<ul>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+					</ul>
+					<div class="add-compare">
+						<a href="#">Add to Compare</a>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			<div class="col-sm-12">
+				<a class="show-all">Show All({{new_banquets_count}})
+					<i class="material-icons">keyboard_arrow_right</i>
+				</a>
+			</div>
+
+</div>
+</div>
+</section><!-- banquet-wrap -->
+
+
+
+<section class="bq-ct-wrap">
+<div class="container">
+<h2>Browse Banquets in Kathmandu</h2>
+<div class="row">
+	{% for new_banquet in banquets_in_kathmandu %}
+<div class="col-sm-3">
+	<div class="banquet-wrap-box">
+			<a href="{{ 'banquet-details'|page({id: new_banquet.id, slug: new_banquet.slug}) }}">
+			<img src="{{new_banquet.banners[0].getPath()}}" class="img-fluid">
+			</a>
+			<a href="{{ 'banquet-details'|page({id: new_banquet.id, slug: new_banquet.slug}) }}">
+			<h4>{{ new_banquet.name }}</h4>
+			</a>
+			<h5>{{ new_banquet.address }}</h5>
+			<h5>Capacity:{{ new_banquet.max_capacity }} Max</h5>
+		<ul>
+			<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+			<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+			<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+			<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+			<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+		</ul>
+		<div class="add-compare">
+			<a href="#">Add to Compare</a>
+		</div>
+	</div>
+</div>
+{% endfor %}
+<div class="col-sm-12">
+	<a class="show-all">Show All({{banquets_in_kathmandu_count}})
+		<i class="material-icons">keyboard_arrow_right</i>
+	</a>
+</div>
+
+</div>
+</div>
+</section>
+
+<section class="bq-explore-wrap">
+<div class="container">
+<h2>Explore Vendors</h2>
+<div class="row">
+{% for vendor_cat in vendors_cat%}
+	<div class="col-md-2">
+		<a href="{{ 'vendor'|page({slug: vendor_cat.slug}) }}">
+		<div class="bq-explore-box">
+			<img src="{{vendor_cat.thumbnail.getPath()}}">
+			<h4>{{vendor_cat.name}}</h4>
+		</div>
+		</a>
+	</div>
+{% endfor %}
+</div>
+</div>
+</section>
+
+<script>
+  $(document).ready(function(){
+  new WOW().init();
+  $('.owl-carousel').owlCarousel({
+    rtl:true,
+    loop:true,
+    margin:10,
+    nav:true,
+    responsive:{
+      0:{
+        items:1
+      },
+      600:{
+        items:3
+      },
+      1000:{
+        items:5
+      }
+    }
+  });
+  $('.flexslider').flexslider({
+      animation: "slide"
+    });
+  
+    $('#carousel').flexslider({
+      animation: "slide",
+      controlNav: false,
+      animationLoop: false,
+      slideshow: false,
+      itemWidth: 210,
+      itemMargin: 5,
+      asNavFor: '#slider'
+    });
+   
+    $('#slider').flexslider({
+      animation: "slide",
+      controlNav: false,
+      animationLoop: false,
+      slideshow: false,
+      sync: "#carousel"
+    });
+  });  
+  </script>";s:5:"mtime";i:1561456056;s:6:"markup";s:6387:"<section class="banner">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="banner-slide">
+					<div class="flexslider">
+						<ul class="slides">
+							<li>
+								<img src="{{'assets/banners/1.jpg'|theme}}" class="img-responsive" alt="">
+							</li>
+							<li>
+								<img src="{{'assets/banners/2.jpg'|theme}}" class="img-responsive" alt="">
+							</li>
+							<li>
+								<img src="{{'assets/banners/3.jpg'|theme}}" class="img-responsive" alt="">
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="col-md-12 bq-ads">
+				 <img src="https://cdn5.vectorstock.com/i/1000x1000/22/69/coming-soon-label-design-vector-822269.jpg" width="100%" height="185px" alt="">
+				</div>
+				<div class="col-md-12 bq-ads">
+				   <img src="https://img.freepik.com/free-vector/opnening-soon-composition-with-flat-design_23-2147865115.jpg?size=338&ext=jpg" width="100%" height="185px" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
+</section> <!-- banner -->
+
+<section class="banquet-wrap">
+<div class="container">
+		<h2>Featured Banquets</h2>
+		<div class="row">
+		{% for featured_banquet in featured_banquets %}
+			<div class="col-sm-3">
+				<div class="banquet-wrap-box">
+				        <a href="{{ 'banquet-details'|page({id: featured_banquet.id, slug: featured_banquet.slug}) }}">
+						<img src="{{featured_banquet.banners[0].getPath()}}" class="img-fluid">
+						</a>
+						<a href="{{ 'banquet-details'|page({id: featured_banquet.id, slug: featured_banquet.slug}) }}">
+						<h4>{{ featured_banquet.name }}</h4>
+						</a>
+						<h5>{{ featured_banquet.address }}</h5>
+						<h5>Capacity:{{ featured_banquet.max_capacity }} Max</h5>
+					<ul>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+					</ul>
+					<div class="add-compare">
+						<a href="#">Add to Compare</a>
+					</div>
+				</div>
+			</div>
+            {% endfor %}
+			<div class="col-sm-12">
+				<a href="{{'featured-banquets'|page}}" class="show-all">Show All({{featured_banquets_count}})
+					<i class="material-icons">keyboard_arrow_right</i>
+				</a>
+			</div>
+		</div>
+</div>
+</section><!-- banquet-wrap -->
+
+<section class="banquet-wrap">
+<div class="container">
+		<h2>Recently Added Banquets</h2>
+		<div class="row">
+				{% for new_banquet in new_banquets %}
+			<div class="col-sm-3">
+				<div class="banquet-wrap-box">
+				        <a href="{{ 'banquet-details'|page({id: new_banquet.id, slug: new_banquet.slug}) }}">
+						<img src="{{new_banquet.banners[0].getPath()}}" class="img-fluid">
+						</a>
+						<a href="{{ 'banquet-details'|page({id: new_banquet.id, slug: new_banquet.slug}) }}">
+						<h4>{{ new_banquet.name }}</h4>
+						</a>
+						<h5>{{ new_banquet.address }}</h5>
+						<h5>Capacity:{{ new_banquet.max_capacity }} Max</h5>
+					<ul>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+					</ul>
+					<div class="add-compare">
+						<a href="#">Add to Compare</a>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			<div class="col-sm-12">
+				<a class="show-all">Show All({{new_banquets_count}})
+					<i class="material-icons">keyboard_arrow_right</i>
+				</a>
+			</div>
+
+</div>
+</div>
+</section><!-- banquet-wrap -->
+
+
+
+<section class="bq-ct-wrap">
+<div class="container">
+<h2>Browse Banquets in Kathmandu</h2>
+<div class="row">
+	{% for new_banquet in banquets_in_kathmandu %}
+<div class="col-sm-3">
+	<div class="banquet-wrap-box">
+			<a href="{{ 'banquet-details'|page({id: new_banquet.id, slug: new_banquet.slug}) }}">
+			<img src="{{new_banquet.banners[0].getPath()}}" class="img-fluid">
+			</a>
+			<a href="{{ 'banquet-details'|page({id: new_banquet.id, slug: new_banquet.slug}) }}">
+			<h4>{{ new_banquet.name }}</h4>
+			</a>
+			<h5>{{ new_banquet.address }}</h5>
+			<h5>Capacity:{{ new_banquet.max_capacity }} Max</h5>
+		<ul>
+			<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+			<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+			<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+			<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+			<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+		</ul>
+		<div class="add-compare">
+			<a href="#">Add to Compare</a>
+		</div>
+	</div>
+</div>
+{% endfor %}
+<div class="col-sm-12">
+	<a class="show-all">Show All({{banquets_in_kathmandu_count}})
+		<i class="material-icons">keyboard_arrow_right</i>
+	</a>
+</div>
+
+</div>
+</div>
+</section>
+
+<section class="bq-explore-wrap">
+<div class="container">
+<h2>Explore Vendors</h2>
+<div class="row">
+{% for vendor_cat in vendors_cat%}
+	<div class="col-md-2">
+		<a href="{{ 'vendor'|page({slug: vendor_cat.slug}) }}">
+		<div class="bq-explore-box">
+			<img src="{{vendor_cat.thumbnail.getPath()}}">
+			<h4>{{vendor_cat.name}}</h4>
+		</div>
+		</a>
+	</div>
+{% endfor %}
+</div>
+</div>
+</section>
+
+<script>
+  $(document).ready(function(){
+  new WOW().init();
+  $('.owl-carousel').owlCarousel({
+    rtl:true,
+    loop:true,
+    margin:10,
+    nav:true,
+    responsive:{
+      0:{
+        items:1
+      },
+      600:{
+        items:3
+      },
+      1000:{
+        items:5
+      }
+    }
+  });
+  $('.flexslider').flexslider({
+      animation: "slide"
+    });
+  
+    $('#carousel').flexslider({
+      animation: "slide",
+      controlNav: false,
+      animationLoop: false,
+      slideshow: false,
+      itemWidth: 210,
+      itemMargin: 5,
+      asNavFor: '#slider'
+    });
+   
+    $('#slider').flexslider({
+      animation: "slide",
+      controlNav: false,
+      animationLoop: false,
+      slideshow: false,
+      sync: "#carousel"
+    });
+  });  
+  </script>";s:4:"code";s:882:"use View9\Banquet\Models\Banquet;
+use View9\Citiesnepal\Models\City;
+use View9\Vendors\Models\Category;
+
+
+
+function onStart()
+{
+
+    $new_banquets = Banquet::orderBy('created_at', 'desc')->limit(4)->get();
+    $this['new_banquets'] = $new_banquets;
+    $this['new_banquets_count'] = Banquet::orderBy('created_at', 'desc')->count();
+    
+    $featured_banquets = Banquet::where('featured', 1)->get();
+    $this['featured_banquets'] = $featured_banquets;
+    $this['featured_banquets_count'] = $featured_banquets->count();
+    
+	$this['vendors_cat'] = Category::get();
+	
+	$kathmandu = City::where('name', 'Kathmandu')->get();
+	foreach($kathmandu as $ktm)
+		$banquets_in_kathmandu = Banquet::where('city_id', $ktm['id'])->get();
+	$this['banquets_in_kathmandu'] = $banquets_in_kathmandu;
+	$this['banquets_in_kathmandu_count'] = $banquets_in_kathmandu->count();
+}";s:5:"title";s:12:"Banquet City";s:3:"url";s:1:"/";s:6:"layout";s:12:"master_front";s:10:"meta_title";s:12:"Banquet City";s:9:"is_hidden";s:1:"0";}}

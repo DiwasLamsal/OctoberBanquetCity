@@ -1,0 +1,10 @@
+name: Districts
+form: $/view9/citiesnepal/models/district/fields.yaml
+modelClass: View9\Citiesnepal\Models\District
+defaultRedirect: view9/citiesnepal/districts
+create:
+    redirect: 'view9/citiesnepal/districts/update/:id'
+    redirectClose: view9/citiesnepal/districts
+update:
+    redirect: view9/citiesnepal/districts
+    redirectClose: view9/citiesnepal/districts

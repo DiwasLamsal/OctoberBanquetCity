@@ -1,0 +1,4 @@
+title: Cities
+modelClass: View9\Citiesnepal\Models\City
+toolbar:
+    buttons: reorder_toolbar

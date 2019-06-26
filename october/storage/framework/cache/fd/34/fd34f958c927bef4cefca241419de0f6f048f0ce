@@ -1,0 +1,36 @@
+1561542698a:1:{s:10:"vendor.htm";a:9:{s:8:"fileName";s:10:"vendor.htm";s:7:"content";s:453:"title = "Vendor"
+url = "/vendor/:slug"
+layout = "master_front"
+is_hidden = 0
+==
+<?php
+use View9\Vendors\Models\Category;
+use View9\Vendors\Models\Vendor;
+
+function onStart()
+{
+    $category = Category::where('slug', $this->param('slug'))->first();
+    if($category){
+        $this['vendors'] = $category->vendors;
+        } else {
+            return redirect('/');
+}
+}
+?>
+==
+{% for vendor in vendors %}
+<p>{{ vendor.name }}</p>
+{% endfor %}";s:5:"mtime";i:1556439262;s:6:"markup";s:67:"{% for vendor in vendors %}
+<p>{{ vendor.name }}</p>
+{% endfor %}";s:4:"code";s:293:"use View9\Vendors\Models\Category;
+use View9\Vendors\Models\Vendor;
+
+function onStart()
+{
+    $category = Category::where('slug', $this->param('slug'))->first();
+    if($category){
+        $this['vendors'] = $category->vendors;
+        } else {
+            return redirect('/');
+}
+}";s:5:"title";s:6:"Vendor";s:3:"url";s:13:"/vendor/:slug";s:6:"layout";s:12:"master_front";s:9:"is_hidden";s:1:"0";}}

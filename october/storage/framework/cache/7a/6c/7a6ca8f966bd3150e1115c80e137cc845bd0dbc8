@@ -1,0 +1,105 @@
+1561542698a:1:{s:16:"master_front.htm";a:6:{s:8:"fileName";s:16:"master_front.htm";s:7:"content";s:1429:"[session]
+security = "all"
+
+==
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{{this.page.title}}</title>
+  <meta name="description" content="{{this.page.meta_description}}">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
+  <link href="{{ [
+    'assets/css/bootstrap.min.css',
+    'assets/css/ham.css',
+    'assets/css/style.css',
+    'assets/css/flexslider.css',
+    'assets/css/owl.carousel.css',
+    'assets/css/font-awesome.css',
+    'assets/css/animate.css'
+    ]|theme }}" rel="stylesheet">
+  {% styles %}
+</head>
+
+<body>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="{{ [
+    'assets/js/owl.carousel.js',
+    'assets/js/bootstrap.min.js',
+    'assets/js/jquery.flexslider.js',
+    'assets/js/wow.js',
+    'assets/js/retina.js'
+]|theme }}"></script>
+  {% partial "navbar" %}
+  {% page %}
+
+  {% partial "footer" %}
+
+  
+<script>
+  $(document).ready(function(){
+    $("#navbarSupportedContent form").submit(function (event) {
+			event.preventDefault();
+			query = $(this).find('input').val();
+      window.location="{{'homepage'|page}}"+'/s/'+query;
+		});
+  });  
+  </script>
+
+  {% framework extras %}
+  {% scripts %}
+  </body>
+  </html>";s:5:"mtime";i:1561453812;s:6:"markup";s:1394:"<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{{this.page.title}}</title>
+  <meta name="description" content="{{this.page.meta_description}}">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
+  <link href="{{ [
+    'assets/css/bootstrap.min.css',
+    'assets/css/ham.css',
+    'assets/css/style.css',
+    'assets/css/flexslider.css',
+    'assets/css/owl.carousel.css',
+    'assets/css/font-awesome.css',
+    'assets/css/animate.css'
+    ]|theme }}" rel="stylesheet">
+  {% styles %}
+</head>
+
+<body>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="{{ [
+    'assets/js/owl.carousel.js',
+    'assets/js/bootstrap.min.js',
+    'assets/js/jquery.flexslider.js',
+    'assets/js/wow.js',
+    'assets/js/retina.js'
+]|theme }}"></script>
+  {% partial "navbar" %}
+  {% page %}
+
+  {% partial "footer" %}
+
+  
+<script>
+  $(document).ready(function(){
+    $("#navbarSupportedContent form").submit(function (event) {
+			event.preventDefault();
+			query = $(this).find('input').val();
+      window.location="{{'homepage'|page}}"+'/s/'+query;
+		});
+  });  
+  </script>
+
+  {% framework extras %}
+  {% scripts %}
+  </body>
+  </html>";s:4:"code";N;s:7:"session";a:1:{s:8:"security";s:3:"all";}}}

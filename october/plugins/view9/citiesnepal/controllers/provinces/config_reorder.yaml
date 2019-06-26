@@ -1,0 +1,4 @@
+title: Provinces
+modelClass: View9\Citiesnepal\Models\Province
+toolbar:
+    buttons: reorder_toolbar

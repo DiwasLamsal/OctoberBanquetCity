@@ -1,0 +1,1990 @@
+1561542906a:1:{s:19:"banquet-details.htm";a:10:{s:8:"fileName";s:19:"banquet-details.htm";s:7:"content";s:32450:"title = "Banquet"
+url = "/:id/:slug"
+layout = "master_front"
+is_hidden = 0
+
+[reviewForm]
+==
+<?php
+use View9\Banquet\Models\Banquet;
+use View9\Banquet\Models\Review;
+use View9\Banquet\Models\FoodCategory;
+use View9\Banquet\Models\FoodItem;
+
+use RainLab\User\Models\User;
+
+function onStart()
+{
+    $banquet = Banquet::where('id', $this->param('id'))->first();
+    if($this->param('slug') != $banquet->slug){
+        return redirect('/');
+        }
+	$this['banquet'] = $banquet;
+	
+	$reviews = Review::where('banquet_id', $this->param('id'))
+	->join('users', 'users.id', '=', 'view9_banquet_reviews.user_id')
+	->select('view9_banquet_reviews.*', 'users.email')->get();
+	$this['reviews']=$reviews;
+	$this['reviews2']=$reviews;
+		
+	$foodCategories = FoodCategory::where('banquet_id', $this->param('id'))->get();
+	$foodCategories2 = $foodCategories;
+	$this['foodCategories']=$foodCategories;
+	
+	$categoryIdHolder = array();
+
+	foreach($foodCategories2 as $foodCategory){
+		array_push($categoryIdHolder, $foodCategory['id']);
+	}
+
+	$foodItems = FoodItem::whereIn('food_category_id', $categoryIdHolder)->get();
+	$this['foodItems'] = $foodItems;
+
+	$user = User::where('id', 3);
+	$this['user']=$user;
+	
+}
+?>
+==
+{{user.email}}
+
+<section class="bq-detail-head-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="bq-detail-head">
+				<div class="col-md-6">
+					<h3>{{banquet.name}}</h3>
+					<span>{{banquet.address}}</span>
+				</div>
+				<div class="col-md-3 col-md-offset-3">
+					<div class="row">
+						<div class="col-md-5 nopadding">
+							<ul class="bq-detail-rate">
+								<li><img src="str.png" alt=""></li>
+								<li><img src="str.png" alt=""></li>
+								<li><img src="str.png" alt=""></li>
+								<li><img src="str.png" alt=""></li>
+								<li><img src="str.png" alt=""></li>
+								<span>34 Reviews</span>
+							</ul>
+							
+						</div>
+						<div class="col-md-7 nopadding">
+							<button class="share-btn"><a href="#"><i class="fa fa-share"></i> SHARE</a></button>
+						</div>
+					</div>	
+				</div>
+			</div><!-- bq-detail-head -->
+		</div>
+	</div>
+</section><!-- bq-detail-head-wrap -->
+
+
+<section class="bq-detail-banner">
+	<div class="container-fluid">
+		<div class="row bq-banner">
+			<div class="col-md-6 nopadding">
+				<img src="{{banquet.banners[0].getPath()}}" alt="" class="img-responsive">
+			</div>
+			<div class="col-md-6 nopadding">
+				<div class="col-md-6 nopadding">
+					<img src="img/am2.png" alt="" class="img-responsive">
+				</div>
+				<div class="col-md-6 nopadding">
+					<img src="img/am5.png" alt="" class="img-responsive">
+				</div>
+				<div class="col-md-6 nopadding">
+					<img src="img/am3.png" alt="" class="img-responsive">
+				</div>
+				<div class="col-md-6 nopadding">
+					<img src="img/am4.png" alt="" class="img-responsive">
+				</div>
+			</div>
+		</div>
+	</div>
+</section><!-- bq-detail-banner -->
+
+<section class="bq-detail-tabs">
+	<div class="tabs">
+		<div class="tab-head">
+			<div class="container">
+				<div class="row">
+				<div class="col-md-9">
+					<div class="tab-button-outer">
+						<ul id="tab-button">
+							<li><a href="#tab01">Overview</a></li>
+							<li><a href="#tab02">Menu</a></li>
+							<li><a href="#tab03">Gallery</a></li>
+							<li><a href="#tab04">Address and Contact</a></li>
+							<li><a href="#tab05">Rating and Reviews</a></li>
+						</ul>
+					</div>
+			   </div>
+			   <div class="col-md-3 nopadding upper-contact">
+			   	<div class="col-md-6">
+			   		<span><i class="fa fa-phone"></i>{{banquet.phone}}</span>
+			   	</div>
+			   	<div class="col-md-6">
+			   		<span><i class="fa fa-phone"></i> {{banquet.phone}}</span>
+			   	</div>
+			   </div>
+			</div>
+			</div>
+		</div>
+	</div>
+	<div class="tab-desc-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="tab-select-outer">
+					<select id="tab-select">
+						<option value="#tab01">Tab 1</option>
+						<option value="#tab02">Tab 2</option>
+						<option value="#tab03">Tab 3</option>
+						<option value="#tab04">Tab 4</option>
+						<option value="#tab05">Tab 5</option>
+					</select>
+				</div>
+
+				<div id="tab01" class="tab-contents">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-9">
+								<div class="overview-wrap">
+									<p>{{banquet.description}}</p>
+									<div class="bq-capacity bh4">
+										<h4>Capacity <span>(Max {{banquet.max_capacity}})</span></h4>
+										<div class="col-md-3 nopadding">
+											<h5>Cluster : <span>500</span></h5>
+										</div>
+										<div class="col-md-3 nopadding">
+											<h5>Theatre Style : <span>300</span></h5>
+										</div>
+										<div class="col-md-3 nopadding">
+											<h5>Classroom Style : <span>5000</span></h5>
+										</div>
+										<div class="col-md-3 nopadding">
+											<h5>Open : <span>1000</span></h5>
+										</div>
+									</div><!-- bq-capacity -->
+
+									<div class="bq-facelities bh4">
+										<h4>Amenities and Facilities</h4>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-wifi"></i> <span>Air Conditioning</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-bus"></i> <span>Secure Parking</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-bath"></i> <span>Bathroom</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-heart-o"></i> <span>Food</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-motorcycle"></i> <span>MotorCycle</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-bus"></i> <span>Secure Parking</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-plug"></i> <span>Air Conditioning</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-tree"></i> <span>Secure Parking</span>
+										</div>
+									</div><!-- bq-facelities -->
+
+									<div class="bq-policies bh4">
+										<h4>Policies</h4>
+
+										<div class="col-md-6 nopadding">
+											<h5>Decor</h5>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-close"></i>
+												<span>Outside dectorator allowed</span>
+											</div>
+										</div>
+
+										<div class="col-md-6 nopadding">
+											<h5>Food</h5>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Non Veg food allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-close"></i>
+												<span>Veg items not allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i>
+												<span>Outside dectorator allowed</span>
+											</div>
+										</div>
+
+										<div class="col-md-6 nopadding">
+											<h5>Alcohol</h5>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-close"></i>
+												<span>Outside dectorator allowed</span>
+											</div>
+										</div>
+
+										<div class="col-md-6 nopadding">
+											<h5>Parking</h5>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-close"></i>
+												<span>Outside dectorator allowed</span>
+											</div>
+										</div>
+
+										<div class="col-md-6 nopadding">
+											<h5>Other Polocies</h5>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-close"></i>
+												<span>Outside dectorator allowed</span>
+											</div>
+										</div>
+
+									</div><!-- bq-policies -->
+
+
+
+								</div>
+							</div><!-- col-md-9 -->
+							<div class="col-md-3">
+								<h3 class="vin-title">Venues Inside</h3>
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/vi.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq8.png" class="img-fluid">
+										<h4>Sagarmatha Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq4.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+							</div><!-- col-md-3 -->
+						</div>
+					</div>
+
+				</div><!-- tab01 -->
+
+
+
+				<div id="tab02" class="tab-contents menu-tabs">
+					<div class="col-md-9">
+						<ul class="menu-tabs-head">
+							<li class="active">Main Menu (Non Veg)</li>
+							<li>Main Menu (Veg)</li>
+							<li>Non Veg Delight</li>
+						</ul>
+
+						<div class="col-md-12 bq-menu-item bh4 nopadding">
+							{% for foodCategory in foodCategories %}
+							<h4 class="bmi-ttl">{{foodCategory.name}}</h4>
+							<ul>
+								<li><p>
+								{% for foodItem in foodItems %}
+									{% if foodItem.food_category_id == foodCategory.id %}
+											{{foodItem.name}}  | 		
+									{% endif %}
+								{% endfor %}
+								</li>
+							</ul>
+							{% endfor %}
+						</div><!-- bq-menu-item -->
+
+
+
+						{% for review in reviews2 %}
+							{% if review.user_id == user.id %}
+								{% set alreadyReviewed = true %}
+							{% endif %}
+						{% endfor %}
+						{% if alreadyReviewed %}
+							<br>&nbsp;<br>&nbsp;<br><hr><br>&nbsp;<br>
+							<h2>You have already reviewed this banquet.</h2>
+						{% else %}
+						{% if user %}
+							{% component 'reviewForm' %}
+						{% endif  %}
+						{% endif %}
+						<br>&nbsp;<br>
+						<b>Reviews go here</b>
+						<br>&nbsp;<hr>
+						{% set reviewCount = 0 %}
+						{% set reviewSum = 0 %}
+						{% for review in reviews %}
+							{% set reviewCount = reviewCount + 1 %}
+							{% set reviewSum = reviewSum + review.rating %}
+							
+							<b>Posted By: </b>{{review.email}}
+							<p>Post Date: {{review.post_date}}</p>
+							<h5>{{review.description}}</h5>
+							<b>Rating: {{review.rating}} / 5</b>
+							<br><hr>
+						{% endfor %}
+						{% if reviewCount > 0 %}
+							{% set reviewAverage = reviewSum/reviewCount %}
+						{% endif %}
+						<hr>
+						<b>Average Rating For Banquet: </b>{{reviewAverage}}
+
+					</div><!-- col-md-9 -->
+
+					<div class="col-md-3">
+								<h3 class="vin-title">Venues Inside</h3>
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/vi.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq8.png" class="img-fluid">
+										<h4>Sagarmatha Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq4.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+							</div><!-- col-md-3 -->
+				</div><!-- tab02 -->
+
+				<div id="tab03" class="tab-contents bq-gallery">
+				<div class="col-md-9">
+					<div class="row">
+                 <div class="col-md-9">
+                 	<div class="col-md-6">
+                 		<img src="img/bq6.png" alt="" class="img-responsive">
+                 	</div>
+                 	<div class="col-md-6">
+                 		<img src="img/bq5.png" alt="" class="img-responsive">
+                 	</div>
+                 	<div class="col-md-12" style="margin: 30px 0">
+                 		<img src="img/bq2.png" alt="" class="img-responsive">
+                 	</div>
+                 	<div class="col-md-6">
+                 		<img src="img/bq4.png" alt="" class="img-responsive">
+                 	</div>
+                 	<div class="col-md-6">
+                 		<img src="img/bq1.png" alt="" class="img-responsive">
+                 	</div>
+                 </div>
+
+                 <div class="col-md-3 nopadding lg-img">
+                 	<div>
+                 		<img src="img/bq6.png" alt="" class="img-responsive">
+                 	</div>
+                 	<div >
+                 		<img src="img/bq5.png" alt="" class="img-responsive">
+                 	</div>
+                 </div>
+             </div>
+				</div><!-- col-md-9 -->
+
+				 <div class="col-md-3">
+								<h3 class="vin-title">Venues Inside</h3>
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/vi.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq8.png" class="img-fluid">
+										<h4>Sagarmatha Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq4.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+							</div><!-- col-md-3 -->
+				</div><!-- tab03 -->
+
+				<div id="tab04" class="tab-contents">
+					<div class="col-md-9">
+						<div class="col-md-12 nopadding">
+							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.1127241364816!2d85.33111671559486!3d27.682910682802127!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19a6a1185d73%3A0x62e78f577014992c!2sView9!5e0!3m2!1sen!2snp!4v1558348201499!5m2!1sen!2snp" width="100%" height="600" frameborder="0" style="border:0" allowfullscreen></iframe>
+						</div>
+
+                      <div class="row">
+						<div class="col-md-4 bq-contact-address bh4">
+							<h5>Banquet location</h5>
+							<ul>
+								<li>Opposite of Bhatbhateni Super market</li>
+								<li>Bhatbhateni, Kathmandu, Nepal</li>
+								<li>Phone: 4123896</li>
+								<li>Mobile: 9841979700</li>
+								<li>Email: amrapali@gmail.com</li>
+								<li>Website: amrapali.com</li>
+							</ul>
+						</div><!-- bq-contact-address -->
+                       
+						<div class="col-md-4 bq-contact-address bh4">
+							<h5>Banquet location</h5>
+							<ul>
+								<li>Opposite of Bhatbhateni Super market</li>
+								<li>Bhatbhateni, Kathmandu, Nepal</li>
+								<li>Phone: 4123896</li>
+								<li>Mobile: 9841979700</li>
+								<li>Email: amrapali@gmail.com</li>
+								<li>Website: amrapali.com</li>
+							</ul>
+						</div><!-- bq-contact-address -->
+
+						<div class="col-md-4 bq-contact-address bh4">
+							<h5>Banquet location</h5>
+							<ul>
+								<li>Opposite of Bhatbhateni Super market</li>
+								<li>Bhatbhateni, Kathmandu, Nepal</li>
+								<li>Phone: 4123896</li>
+								<li>Mobile: 9841979700</li>
+								<li>Email: amrapali@gmail.com</li>
+								<li>Website: amrapali.com</li>
+							</ul>
+						</div><!-- bq-contact-address -->
+					 </div>
+					</div><!-- col-md-9 -->
+
+					<div class="col-md-3">
+								<h3 class="vin-title">Venues Inside</h3>
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/vi.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq8.png" class="img-fluid">
+										<h4>Sagarmatha Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq4.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+							</div><!-- col-md-3 -->
+				</div><!-- tab04 -->
+
+				<div id="tab05" class="tab-contents bq-review-wrap">
+					<div class="col-md-9">
+						<div class="col-md-12 nopadding">
+							<div class="col-md-6 reviews nopadding">
+								<div class="col-md-4 nopadding"><h3>34 Reviews</h3></div>
+								<div class="col-md-8">
+								<ul class="bq-detail-rate">
+								<li><img src="img/str.png" alt=""></li>
+								<li><img src="img/str.png" alt=""></li>
+								<li><img src="img/str.png" alt=""></li>
+								<li><img src="img/str.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+							    </ul>
+						       </div>
+							</div>
+							<div class="col-md-6 nopadding">
+								<a href="#" class="wr-review">WRITE REVIEW</a>
+							</div>	
+						</div>
+
+						<div class="col-md-12 nopadding review-box-wrap">
+							<div class="review-box">
+								<div class="col-md-2">
+									<img src="img/rv1.png" alt="" class="img-responsive">
+								</div>
+								<div class="col-md-10 banquet-wrap-box bh4">
+									<h4>Beautiful Ambience and great food!</h4>
+									<p>My daughter's 18th birthday was celebrated and it was a blast. Enjoyed every bit of it with amazing food, music, service. Bookevents took my review then and there and my review is still the same. Bookevents are yet to send my recording as promised.</p>
+									<ul>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+									</ul>
+									<h5>Ramesh Khatri,<span>November 2018</span></5>
+								</div>
+							</div>
+						</div><!-- review-box-wrap -->
+
+						<div class="col-md-12 nopadding review-box-wrap">
+							<div class="review-box">
+								<div class="col-md-2">
+									<img src="img/rv2.png" alt="" class="img-responsive">
+								</div>
+								<div class="col-md-10 banquet-wrap-box bh4">
+									<h4>Best Banquet Hall in Kathmandu</h4>
+									<p>My daughter's 18th birthday was celebrated and it was a blast. Enjoyed every bit of it with amazing food, music, service. Bookevents took my review then and there and my review is still the same. Bookevents are yet to send my recording as promised.</p>
+									<ul>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+									</ul>
+									<h5>Ramesh Khatri,<span>November 2018</span></5>
+								</div>
+							</div>
+						</div><!-- review-box-wrap -->
+
+						<div class="col-md-12 nopadding review-box-wrap">
+							<div class="review-box">
+								<div class="col-md-2">
+									<img src="img/rv1.png" alt="" class="img-responsive">
+								</div>
+								<div class="col-md-10 banquet-wrap-box bh4">
+									<h4>Beautiful Ambience and great food!</h4>
+									<p>My daughter's 18th birthday was celebrated and it was a blast. Enjoyed every bit of it with amazing food, music, service. Bookevents took my review then and there and my review is still the same. Bookevents are yet to send my recording as promised.</p>
+									<ul>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+									</ul>
+									<h5>Ramesh Khatri,<span>November 2018</span></5>
+								</div>
+							</div>
+						</div><!-- review-box-wrap -->
+
+						<div class="col-md-4 col-md-offset-5"><a href="#" class="load-btn">LOAD MORE</a></div>
+
+
+
+					</div><!-- col-md-9 -->
+
+					<div class="col-md-3">
+								<h3 class="vin-title">Venues Inside</h3>
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/vi.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq8.png" class="img-fluid">
+										<h4>Sagarmatha Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq4.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+							</div><!-- col-md-3 -->
+					
+
+				</div><!-- tab05 -->
+			</div>
+		</div><!-- tab-desc-wrap -->
+	</div>
+</div>
+</section><!-- bq-detail-tabs -->
+
+
+<section class="banquet-wrap">
+	<div class="container">
+				<h2>Banquet Nearby</h2>
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="banquet-wrap-box">
+							<img src="img/bq5.png" class="img-fluid">
+							<h4>Sasa Banquet & Event Management</h4>
+							<h5>Buddhanagar,kathmandu</h5>
+							<h5>Capacity:1200 Max</h5>
+							<ul>
+								<li><img src="img/rate-full.png" alt=""></li>
+								<li><img src="img/rate-full.png" alt=""></li>
+								<li><img src="img/rate-full.png" alt=""></li>
+								<li><img src="img/rate-half.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-3">
+						<div class="banquet-wrap-box">
+							<img src="img/bq6.png" class="img-responsive" alt="">
+							<h4>Crystal Banquet</h4>
+							<h5>Buddhanagar,kathmandu</h5>
+							<h5>Capacity:1200 Max</h5>
+							<ul>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-3">
+						<div class="banquet-wrap-box">
+							<img src="img/bq7.png" class="img-fluid">
+							<h4>Maxim Banquets & Events</h4>
+							<h5>Buddhanagar,kathmandu</h5>
+							<h5>Capacity:1200 Max</h5>
+							<ul>
+								<li><img src="img/rate-full.png" alt=""></li>
+								<li><img src="img/rate-half.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-3">
+						<div class="banquet-wrap-box">
+							<img src="img/bq8.png" class="img-fluid" alt="">
+							<h4>Alfa House Banquet</h4>
+							<h5>Buddhanagar,kathmandu</h5>
+							<h5>Capacity:1200 Max</h5>
+							<ul>
+								<li><img src="img/rate-full.png" alt=""></li>
+								<li><img src="img/rate-half.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-12">
+						<a href="#" class="show-all">Show All(192)
+							<i class="material-icons">keyboard_arrow_right</i>
+						</a>
+					</div>
+
+		</div>
+	</div>
+</section><!-- banquet-wrap -->
+
+<section class="bq-ct-wrap">
+  <div class="container">
+  	<h2>Browse Banquets in your City</h2>
+	<div class="owl-carousel owl-theme">
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc1.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Kathmandu</h4>
+						<span><p>230</p> Banquets</span>
+					</figcaption>
+				</figure>
+			</a>
+		</div>
+
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc2.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Lalitpur</h4>
+						<span><p>20</p>Banquets</span>
+					</figcaption>
+				</figure>
+	     	</a>
+		</div>
+
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc3.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Dhanding</h4>
+						<span><p>90</p> Banquets</span>
+					</figcaption>
+				</figure>
+			</a>
+		</div>
+
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc4.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Pokhara</h4>
+						<span><p>45</p> Banquets</span>
+					</figcaption>
+				</figure>
+			</a>
+		</div>
+
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc5.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Biratnagar</h4>
+						<span><p>120</p> Banquets</span>
+					</figcaption>
+				</figure>
+			</a>
+		</div>
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc6.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Bhaktapur</h4>
+						<span><p>250</p> Banquets</span>
+					</figcaption>
+				</figure>
+			</a>
+		</div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal login-modal" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="img/close.png" alt=""></button>
+        <h4 class="modal-title" id="myModalLabel">Log In</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email Address"><i class="icofont-envelope"></i>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"><i class="icofont-lock"></i>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Remember Me
+            </label>
+          </div>
+          <button type="submit" class="btn btn-default login-btn">Log In</button>
+          <span><a href="#" class="fgt-pwd">Forget your Password?</a></span>
+          <h5>Don't have an account? <span><a href="#">Sign Up</a></span></h5>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal login-modal sign-up" id="signup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="img/close.png" alt=""></button>
+        <h4 class="modal-title" id="myModalLabel">Sign Up</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Full Name"><i class="icofont-envelope"></i>
+          </div>
+          <div class="form-group">
+            <input type="input" class="form-control" id="exampleInputPassword1" placeholder="Address"><i class="icofont-google-map"></i>
+          </div>
+          <div class="form-group">
+            <input type="input" class="form-control" id="exampleInput" placeholder="Phone Number"><i class="icofont-iphone"></i>
+          </div>
+           <div class="form-group">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"><i class="icofont-lock"></i>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Confirm Password"><i class="icofont-lock"></i>
+          </div>
+          <button type="submit" class="btn btn-default login-btn">Sign Up</button>
+          <h5>Already have an account? <span><a href="#">Log in</a></span></h5>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="js/owl.carousel.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.flexslider.js"></script>
+<script src="js/wow.js"></script>
+<script src="js/retina.js"></script>
+
+<script>
+  $(document).ready(function(){
+   $("#search_btn").on ('click',function(){
+    $('#search').addClass('wow animated slideInDown');
+    $('#search').toggle();
+
+
+  });
+
+   new WOW().init();
+
+   $('.owl-carousel').owlCarousel({
+     rtl:true,
+     loop:true,
+     margin:10,
+     nav:true,
+     responsive:{
+      0:{
+       items:1
+     },
+     600:{
+       items:3
+     },
+     1000:{
+       items:5
+     }
+   }
+ });
+ });
+
+
+  $('.flexslider').flexslider({
+    animation: "slide"
+  });
+
+  // The slider being synced must be initialized first
+  $('#carousel').flexslider({
+    animation: "slide",
+    controlNav: false,
+    animationLoop: false,
+    slideshow: false,
+    itemWidth: 210,
+    itemMargin: 5,
+    asNavFor: '#slider'
+  });
+
+  $('#slider').flexslider({
+    animation: "slide",
+    controlNav: false,
+    animationLoop: false,
+    slideshow: false,
+    sync: "#carousel"
+  });
+
+//   $('.bq-hamburger').click(function() {
+//   $('.responsive-nav').toggle();
+//   $('.responsive-nav').stop().animate( {backgroundColor:'black'}, {duration:500});
+// });
+
+// });
+
+/* A simple and scalable hamburger menu using css transitions. */
+
+$(function() {
+  var $tabButtonItem = $('#tab-button li'),
+  $tabSelect = $('#tab-select'),
+  $tabContents = $('.tab-contents'),
+  activeClass = 'is-active';
+
+  $tabButtonItem.first().addClass(activeClass);
+  $tabContents.not(':first').hide();
+
+  $tabButtonItem.find('a').on('click', function(e) {
+    var target = $(this).attr('href');
+
+    $tabButtonItem.removeClass(activeClass);
+    $(this).parent().addClass(activeClass);
+    $tabSelect.val(target);
+    $tabContents.hide();
+    $(target).show();
+    e.preventDefault();
+  });
+
+  $tabSelect.on('change', function() {
+    var target = $(this).val(),
+    targetSelectNum = $(this).prop('selectedIndex');
+
+    $tabButtonItem.removeClass(activeClass);
+    $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+    $tabContents.hide();
+    $(target).show();
+  });
+});
+
+</script>";s:5:"mtime";i:1561542304;s:6:"markup";s:31204:"{{user.email}}
+
+<section class="bq-detail-head-wrap">
+	<div class="container">
+		<div class="row">
+			<div class="bq-detail-head">
+				<div class="col-md-6">
+					<h3>{{banquet.name}}</h3>
+					<span>{{banquet.address}}</span>
+				</div>
+				<div class="col-md-3 col-md-offset-3">
+					<div class="row">
+						<div class="col-md-5 nopadding">
+							<ul class="bq-detail-rate">
+								<li><img src="str.png" alt=""></li>
+								<li><img src="str.png" alt=""></li>
+								<li><img src="str.png" alt=""></li>
+								<li><img src="str.png" alt=""></li>
+								<li><img src="str.png" alt=""></li>
+								<span>34 Reviews</span>
+							</ul>
+							
+						</div>
+						<div class="col-md-7 nopadding">
+							<button class="share-btn"><a href="#"><i class="fa fa-share"></i> SHARE</a></button>
+						</div>
+					</div>	
+				</div>
+			</div><!-- bq-detail-head -->
+		</div>
+	</div>
+</section><!-- bq-detail-head-wrap -->
+
+
+<section class="bq-detail-banner">
+	<div class="container-fluid">
+		<div class="row bq-banner">
+			<div class="col-md-6 nopadding">
+				<img src="{{banquet.banners[0].getPath()}}" alt="" class="img-responsive">
+			</div>
+			<div class="col-md-6 nopadding">
+				<div class="col-md-6 nopadding">
+					<img src="img/am2.png" alt="" class="img-responsive">
+				</div>
+				<div class="col-md-6 nopadding">
+					<img src="img/am5.png" alt="" class="img-responsive">
+				</div>
+				<div class="col-md-6 nopadding">
+					<img src="img/am3.png" alt="" class="img-responsive">
+				</div>
+				<div class="col-md-6 nopadding">
+					<img src="img/am4.png" alt="" class="img-responsive">
+				</div>
+			</div>
+		</div>
+	</div>
+</section><!-- bq-detail-banner -->
+
+<section class="bq-detail-tabs">
+	<div class="tabs">
+		<div class="tab-head">
+			<div class="container">
+				<div class="row">
+				<div class="col-md-9">
+					<div class="tab-button-outer">
+						<ul id="tab-button">
+							<li><a href="#tab01">Overview</a></li>
+							<li><a href="#tab02">Menu</a></li>
+							<li><a href="#tab03">Gallery</a></li>
+							<li><a href="#tab04">Address and Contact</a></li>
+							<li><a href="#tab05">Rating and Reviews</a></li>
+						</ul>
+					</div>
+			   </div>
+			   <div class="col-md-3 nopadding upper-contact">
+			   	<div class="col-md-6">
+			   		<span><i class="fa fa-phone"></i>{{banquet.phone}}</span>
+			   	</div>
+			   	<div class="col-md-6">
+			   		<span><i class="fa fa-phone"></i> {{banquet.phone}}</span>
+			   	</div>
+			   </div>
+			</div>
+			</div>
+		</div>
+	</div>
+	<div class="tab-desc-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="tab-select-outer">
+					<select id="tab-select">
+						<option value="#tab01">Tab 1</option>
+						<option value="#tab02">Tab 2</option>
+						<option value="#tab03">Tab 3</option>
+						<option value="#tab04">Tab 4</option>
+						<option value="#tab05">Tab 5</option>
+					</select>
+				</div>
+
+				<div id="tab01" class="tab-contents">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-9">
+								<div class="overview-wrap">
+									<p>{{banquet.description}}</p>
+									<div class="bq-capacity bh4">
+										<h4>Capacity <span>(Max {{banquet.max_capacity}})</span></h4>
+										<div class="col-md-3 nopadding">
+											<h5>Cluster : <span>500</span></h5>
+										</div>
+										<div class="col-md-3 nopadding">
+											<h5>Theatre Style : <span>300</span></h5>
+										</div>
+										<div class="col-md-3 nopadding">
+											<h5>Classroom Style : <span>5000</span></h5>
+										</div>
+										<div class="col-md-3 nopadding">
+											<h5>Open : <span>1000</span></h5>
+										</div>
+									</div><!-- bq-capacity -->
+
+									<div class="bq-facelities bh4">
+										<h4>Amenities and Facilities</h4>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-wifi"></i> <span>Air Conditioning</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-bus"></i> <span>Secure Parking</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-bath"></i> <span>Bathroom</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-heart-o"></i> <span>Food</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-motorcycle"></i> <span>MotorCycle</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-bus"></i> <span>Secure Parking</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-plug"></i> <span>Air Conditioning</span>
+										</div>
+										<div class="col-md-3 nopadding">
+											<i class="fa fa-tree"></i> <span>Secure Parking</span>
+										</div>
+									</div><!-- bq-facelities -->
+
+									<div class="bq-policies bh4">
+										<h4>Policies</h4>
+
+										<div class="col-md-6 nopadding">
+											<h5>Decor</h5>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-close"></i>
+												<span>Outside dectorator allowed</span>
+											</div>
+										</div>
+
+										<div class="col-md-6 nopadding">
+											<h5>Food</h5>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Non Veg food allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-close"></i>
+												<span>Veg items not allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i>
+												<span>Outside dectorator allowed</span>
+											</div>
+										</div>
+
+										<div class="col-md-6 nopadding">
+											<h5>Alcohol</h5>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-close"></i>
+												<span>Outside dectorator allowed</span>
+											</div>
+										</div>
+
+										<div class="col-md-6 nopadding">
+											<h5>Parking</h5>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-close"></i>
+												<span>Outside dectorator allowed</span>
+											</div>
+										</div>
+
+										<div class="col-md-6 nopadding">
+											<h5>Other Polocies</h5>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-check"></i> 
+												<span>Outside dectorator allowed</span>
+											</div>
+											<div class="col-md-12 nopadding">
+												<i class="fa fa-close"></i>
+												<span>Outside dectorator allowed</span>
+											</div>
+										</div>
+
+									</div><!-- bq-policies -->
+
+
+
+								</div>
+							</div><!-- col-md-9 -->
+							<div class="col-md-3">
+								<h3 class="vin-title">Venues Inside</h3>
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/vi.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq8.png" class="img-fluid">
+										<h4>Sagarmatha Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq4.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+							</div><!-- col-md-3 -->
+						</div>
+					</div>
+
+				</div><!-- tab01 -->
+
+
+
+				<div id="tab02" class="tab-contents menu-tabs">
+					<div class="col-md-9">
+						<ul class="menu-tabs-head">
+							<li class="active">Main Menu (Non Veg)</li>
+							<li>Main Menu (Veg)</li>
+							<li>Non Veg Delight</li>
+						</ul>
+
+						<div class="col-md-12 bq-menu-item bh4 nopadding">
+							{% for foodCategory in foodCategories %}
+							<h4 class="bmi-ttl">{{foodCategory.name}}</h4>
+							<ul>
+								<li><p>
+								{% for foodItem in foodItems %}
+									{% if foodItem.food_category_id == foodCategory.id %}
+											{{foodItem.name}}  | 		
+									{% endif %}
+								{% endfor %}
+								</li>
+							</ul>
+							{% endfor %}
+						</div><!-- bq-menu-item -->
+
+
+
+						{% for review in reviews2 %}
+							{% if review.user_id == user.id %}
+								{% set alreadyReviewed = true %}
+							{% endif %}
+						{% endfor %}
+						{% if alreadyReviewed %}
+							<br>&nbsp;<br>&nbsp;<br><hr><br>&nbsp;<br>
+							<h2>You have already reviewed this banquet.</h2>
+						{% else %}
+						{% if user %}
+							{% component 'reviewForm' %}
+						{% endif  %}
+						{% endif %}
+						<br>&nbsp;<br>
+						<b>Reviews go here</b>
+						<br>&nbsp;<hr>
+						{% set reviewCount = 0 %}
+						{% set reviewSum = 0 %}
+						{% for review in reviews %}
+							{% set reviewCount = reviewCount + 1 %}
+							{% set reviewSum = reviewSum + review.rating %}
+							
+							<b>Posted By: </b>{{review.email}}
+							<p>Post Date: {{review.post_date}}</p>
+							<h5>{{review.description}}</h5>
+							<b>Rating: {{review.rating}} / 5</b>
+							<br><hr>
+						{% endfor %}
+						{% if reviewCount > 0 %}
+							{% set reviewAverage = reviewSum/reviewCount %}
+						{% endif %}
+						<hr>
+						<b>Average Rating For Banquet: </b>{{reviewAverage}}
+
+					</div><!-- col-md-9 -->
+
+					<div class="col-md-3">
+								<h3 class="vin-title">Venues Inside</h3>
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/vi.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq8.png" class="img-fluid">
+										<h4>Sagarmatha Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq4.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+							</div><!-- col-md-3 -->
+				</div><!-- tab02 -->
+
+				<div id="tab03" class="tab-contents bq-gallery">
+				<div class="col-md-9">
+					<div class="row">
+                 <div class="col-md-9">
+                 	<div class="col-md-6">
+                 		<img src="img/bq6.png" alt="" class="img-responsive">
+                 	</div>
+                 	<div class="col-md-6">
+                 		<img src="img/bq5.png" alt="" class="img-responsive">
+                 	</div>
+                 	<div class="col-md-12" style="margin: 30px 0">
+                 		<img src="img/bq2.png" alt="" class="img-responsive">
+                 	</div>
+                 	<div class="col-md-6">
+                 		<img src="img/bq4.png" alt="" class="img-responsive">
+                 	</div>
+                 	<div class="col-md-6">
+                 		<img src="img/bq1.png" alt="" class="img-responsive">
+                 	</div>
+                 </div>
+
+                 <div class="col-md-3 nopadding lg-img">
+                 	<div>
+                 		<img src="img/bq6.png" alt="" class="img-responsive">
+                 	</div>
+                 	<div >
+                 		<img src="img/bq5.png" alt="" class="img-responsive">
+                 	</div>
+                 </div>
+             </div>
+				</div><!-- col-md-9 -->
+
+				 <div class="col-md-3">
+								<h3 class="vin-title">Venues Inside</h3>
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/vi.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq8.png" class="img-fluid">
+										<h4>Sagarmatha Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq4.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+							</div><!-- col-md-3 -->
+				</div><!-- tab03 -->
+
+				<div id="tab04" class="tab-contents">
+					<div class="col-md-9">
+						<div class="col-md-12 nopadding">
+							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.1127241364816!2d85.33111671559486!3d27.682910682802127!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19a6a1185d73%3A0x62e78f577014992c!2sView9!5e0!3m2!1sen!2snp!4v1558348201499!5m2!1sen!2snp" width="100%" height="600" frameborder="0" style="border:0" allowfullscreen></iframe>
+						</div>
+
+                      <div class="row">
+						<div class="col-md-4 bq-contact-address bh4">
+							<h5>Banquet location</h5>
+							<ul>
+								<li>Opposite of Bhatbhateni Super market</li>
+								<li>Bhatbhateni, Kathmandu, Nepal</li>
+								<li>Phone: 4123896</li>
+								<li>Mobile: 9841979700</li>
+								<li>Email: amrapali@gmail.com</li>
+								<li>Website: amrapali.com</li>
+							</ul>
+						</div><!-- bq-contact-address -->
+                       
+						<div class="col-md-4 bq-contact-address bh4">
+							<h5>Banquet location</h5>
+							<ul>
+								<li>Opposite of Bhatbhateni Super market</li>
+								<li>Bhatbhateni, Kathmandu, Nepal</li>
+								<li>Phone: 4123896</li>
+								<li>Mobile: 9841979700</li>
+								<li>Email: amrapali@gmail.com</li>
+								<li>Website: amrapali.com</li>
+							</ul>
+						</div><!-- bq-contact-address -->
+
+						<div class="col-md-4 bq-contact-address bh4">
+							<h5>Banquet location</h5>
+							<ul>
+								<li>Opposite of Bhatbhateni Super market</li>
+								<li>Bhatbhateni, Kathmandu, Nepal</li>
+								<li>Phone: 4123896</li>
+								<li>Mobile: 9841979700</li>
+								<li>Email: amrapali@gmail.com</li>
+								<li>Website: amrapali.com</li>
+							</ul>
+						</div><!-- bq-contact-address -->
+					 </div>
+					</div><!-- col-md-9 -->
+
+					<div class="col-md-3">
+								<h3 class="vin-title">Venues Inside</h3>
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/vi.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq8.png" class="img-fluid">
+										<h4>Sagarmatha Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq4.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+							</div><!-- col-md-3 -->
+				</div><!-- tab04 -->
+
+				<div id="tab05" class="tab-contents bq-review-wrap">
+					<div class="col-md-9">
+						<div class="col-md-12 nopadding">
+							<div class="col-md-6 reviews nopadding">
+								<div class="col-md-4 nopadding"><h3>34 Reviews</h3></div>
+								<div class="col-md-8">
+								<ul class="bq-detail-rate">
+								<li><img src="img/str.png" alt=""></li>
+								<li><img src="img/str.png" alt=""></li>
+								<li><img src="img/str.png" alt=""></li>
+								<li><img src="img/str.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+							    </ul>
+						       </div>
+							</div>
+							<div class="col-md-6 nopadding">
+								<a href="#" class="wr-review">WRITE REVIEW</a>
+							</div>	
+						</div>
+
+						<div class="col-md-12 nopadding review-box-wrap">
+							<div class="review-box">
+								<div class="col-md-2">
+									<img src="img/rv1.png" alt="" class="img-responsive">
+								</div>
+								<div class="col-md-10 banquet-wrap-box bh4">
+									<h4>Beautiful Ambience and great food!</h4>
+									<p>My daughter's 18th birthday was celebrated and it was a blast. Enjoyed every bit of it with amazing food, music, service. Bookevents took my review then and there and my review is still the same. Bookevents are yet to send my recording as promised.</p>
+									<ul>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+									</ul>
+									<h5>Ramesh Khatri,<span>November 2018</span></5>
+								</div>
+							</div>
+						</div><!-- review-box-wrap -->
+
+						<div class="col-md-12 nopadding review-box-wrap">
+							<div class="review-box">
+								<div class="col-md-2">
+									<img src="img/rv2.png" alt="" class="img-responsive">
+								</div>
+								<div class="col-md-10 banquet-wrap-box bh4">
+									<h4>Best Banquet Hall in Kathmandu</h4>
+									<p>My daughter's 18th birthday was celebrated and it was a blast. Enjoyed every bit of it with amazing food, music, service. Bookevents took my review then and there and my review is still the same. Bookevents are yet to send my recording as promised.</p>
+									<ul>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+									</ul>
+									<h5>Ramesh Khatri,<span>November 2018</span></5>
+								</div>
+							</div>
+						</div><!-- review-box-wrap -->
+
+						<div class="col-md-12 nopadding review-box-wrap">
+							<div class="review-box">
+								<div class="col-md-2">
+									<img src="img/rv1.png" alt="" class="img-responsive">
+								</div>
+								<div class="col-md-10 banquet-wrap-box bh4">
+									<h4>Beautiful Ambience and great food!</h4>
+									<p>My daughter's 18th birthday was celebrated and it was a blast. Enjoyed every bit of it with amazing food, music, service. Bookevents took my review then and there and my review is still the same. Bookevents are yet to send my recording as promised.</p>
+									<ul>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+										<li><img src="img/rate.png" alt=""></li>
+									</ul>
+									<h5>Ramesh Khatri,<span>November 2018</span></5>
+								</div>
+							</div>
+						</div><!-- review-box-wrap -->
+
+						<div class="col-md-4 col-md-offset-5"><a href="#" class="load-btn">LOAD MORE</a></div>
+
+
+
+					</div><!-- col-md-9 -->
+
+					<div class="col-md-3">
+								<h3 class="vin-title">Venues Inside</h3>
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/vi.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq8.png" class="img-fluid">
+										<h4>Sagarmatha Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+
+								<div class="col-md-12 venue-in">
+									<div class="banquet-wrap-box">
+										<img src="img/bq4.png" class="img-fluid">
+										<h4>Sasa Banquet &amp; Event Management</h4>
+										<h5>Capacity:1200 Max</h5>
+									</div>
+								</div>
+							</div><!-- col-md-3 -->
+					
+
+				</div><!-- tab05 -->
+			</div>
+		</div><!-- tab-desc-wrap -->
+	</div>
+</div>
+</section><!-- bq-detail-tabs -->
+
+
+<section class="banquet-wrap">
+	<div class="container">
+				<h2>Banquet Nearby</h2>
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="banquet-wrap-box">
+							<img src="img/bq5.png" class="img-fluid">
+							<h4>Sasa Banquet & Event Management</h4>
+							<h5>Buddhanagar,kathmandu</h5>
+							<h5>Capacity:1200 Max</h5>
+							<ul>
+								<li><img src="img/rate-full.png" alt=""></li>
+								<li><img src="img/rate-full.png" alt=""></li>
+								<li><img src="img/rate-full.png" alt=""></li>
+								<li><img src="img/rate-half.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-3">
+						<div class="banquet-wrap-box">
+							<img src="img/bq6.png" class="img-responsive" alt="">
+							<h4>Crystal Banquet</h4>
+							<h5>Buddhanagar,kathmandu</h5>
+							<h5>Capacity:1200 Max</h5>
+							<ul>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-3">
+						<div class="banquet-wrap-box">
+							<img src="img/bq7.png" class="img-fluid">
+							<h4>Maxim Banquets & Events</h4>
+							<h5>Buddhanagar,kathmandu</h5>
+							<h5>Capacity:1200 Max</h5>
+							<ul>
+								<li><img src="img/rate-full.png" alt=""></li>
+								<li><img src="img/rate-half.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-3">
+						<div class="banquet-wrap-box">
+							<img src="img/bq8.png" class="img-fluid" alt="">
+							<h4>Alfa House Banquet</h4>
+							<h5>Buddhanagar,kathmandu</h5>
+							<h5>Capacity:1200 Max</h5>
+							<ul>
+								<li><img src="img/rate-full.png" alt=""></li>
+								<li><img src="img/rate-half.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+								<li><img src="img/rate.png" alt=""></li>
+							</ul>
+							<div class="add-compare">
+								<a href="#">Add to Compare</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-12">
+						<a href="#" class="show-all">Show All(192)
+							<i class="material-icons">keyboard_arrow_right</i>
+						</a>
+					</div>
+
+		</div>
+	</div>
+</section><!-- banquet-wrap -->
+
+<section class="bq-ct-wrap">
+  <div class="container">
+  	<h2>Browse Banquets in your City</h2>
+	<div class="owl-carousel owl-theme">
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc1.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Kathmandu</h4>
+						<span><p>230</p> Banquets</span>
+					</figcaption>
+				</figure>
+			</a>
+		</div>
+
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc2.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Lalitpur</h4>
+						<span><p>20</p>Banquets</span>
+					</figcaption>
+				</figure>
+	     	</a>
+		</div>
+
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc3.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Dhanding</h4>
+						<span><p>90</p> Banquets</span>
+					</figcaption>
+				</figure>
+			</a>
+		</div>
+
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc4.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Pokhara</h4>
+						<span><p>45</p> Banquets</span>
+					</figcaption>
+				</figure>
+			</a>
+		</div>
+
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc5.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Biratnagar</h4>
+						<span><p>120</p> Banquets</span>
+					</figcaption>
+				</figure>
+			</a>
+		</div>
+		<div class="item">
+			<a href="#">
+				<figure>
+					<img src="img/bc6.png">
+					<div class="img-fade"></div>
+					<figcaption>
+						<h4>Bhaktapur</h4>
+						<span><p>250</p> Banquets</span>
+					</figcaption>
+				</figure>
+			</a>
+		</div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal login-modal" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="img/close.png" alt=""></button>
+        <h4 class="modal-title" id="myModalLabel">Log In</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email Address"><i class="icofont-envelope"></i>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"><i class="icofont-lock"></i>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Remember Me
+            </label>
+          </div>
+          <button type="submit" class="btn btn-default login-btn">Log In</button>
+          <span><a href="#" class="fgt-pwd">Forget your Password?</a></span>
+          <h5>Don't have an account? <span><a href="#">Sign Up</a></span></h5>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal login-modal sign-up" id="signup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="img/close.png" alt=""></button>
+        <h4 class="modal-title" id="myModalLabel">Sign Up</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Full Name"><i class="icofont-envelope"></i>
+          </div>
+          <div class="form-group">
+            <input type="input" class="form-control" id="exampleInputPassword1" placeholder="Address"><i class="icofont-google-map"></i>
+          </div>
+          <div class="form-group">
+            <input type="input" class="form-control" id="exampleInput" placeholder="Phone Number"><i class="icofont-iphone"></i>
+          </div>
+           <div class="form-group">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"><i class="icofont-lock"></i>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Confirm Password"><i class="icofont-lock"></i>
+          </div>
+          <button type="submit" class="btn btn-default login-btn">Sign Up</button>
+          <h5>Already have an account? <span><a href="#">Log in</a></span></h5>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="js/owl.carousel.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.flexslider.js"></script>
+<script src="js/wow.js"></script>
+<script src="js/retina.js"></script>
+
+<script>
+  $(document).ready(function(){
+   $("#search_btn").on ('click',function(){
+    $('#search').addClass('wow animated slideInDown');
+    $('#search').toggle();
+
+
+  });
+
+   new WOW().init();
+
+   $('.owl-carousel').owlCarousel({
+     rtl:true,
+     loop:true,
+     margin:10,
+     nav:true,
+     responsive:{
+      0:{
+       items:1
+     },
+     600:{
+       items:3
+     },
+     1000:{
+       items:5
+     }
+   }
+ });
+ });
+
+
+  $('.flexslider').flexslider({
+    animation: "slide"
+  });
+
+  // The slider being synced must be initialized first
+  $('#carousel').flexslider({
+    animation: "slide",
+    controlNav: false,
+    animationLoop: false,
+    slideshow: false,
+    itemWidth: 210,
+    itemMargin: 5,
+    asNavFor: '#slider'
+  });
+
+  $('#slider').flexslider({
+    animation: "slide",
+    controlNav: false,
+    animationLoop: false,
+    slideshow: false,
+    sync: "#carousel"
+  });
+
+//   $('.bq-hamburger').click(function() {
+//   $('.responsive-nav').toggle();
+//   $('.responsive-nav').stop().animate( {backgroundColor:'black'}, {duration:500});
+// });
+
+// });
+
+/* A simple and scalable hamburger menu using css transitions. */
+
+$(function() {
+  var $tabButtonItem = $('#tab-button li'),
+  $tabSelect = $('#tab-select'),
+  $tabContents = $('.tab-contents'),
+  activeClass = 'is-active';
+
+  $tabButtonItem.first().addClass(activeClass);
+  $tabContents.not(':first').hide();
+
+  $tabButtonItem.find('a').on('click', function(e) {
+    var target = $(this).attr('href');
+
+    $tabButtonItem.removeClass(activeClass);
+    $(this).parent().addClass(activeClass);
+    $tabSelect.val(target);
+    $tabContents.hide();
+    $(target).show();
+    e.preventDefault();
+  });
+
+  $tabSelect.on('change', function() {
+    var target = $(this).val(),
+    targetSelectNum = $(this).prop('selectedIndex');
+
+    $tabButtonItem.removeClass(activeClass);
+    $tabButtonItem.eq(targetSelectNum).addClass(activeClass);
+    $tabContents.hide();
+    $(target).show();
+  });
+});
+
+</script>";s:4:"code";s:1130:"use View9\Banquet\Models\Banquet;
+use View9\Banquet\Models\Review;
+use View9\Banquet\Models\FoodCategory;
+use View9\Banquet\Models\FoodItem;
+
+use RainLab\User\Models\User;
+
+function onStart()
+{
+    $banquet = Banquet::where('id', $this->param('id'))->first();
+    if($this->param('slug') != $banquet->slug){
+        return redirect('/');
+        }
+	$this['banquet'] = $banquet;
+	
+	$reviews = Review::where('banquet_id', $this->param('id'))
+	->join('users', 'users.id', '=', 'view9_banquet_reviews.user_id')
+	->select('view9_banquet_reviews.*', 'users.email')->get();
+	$this['reviews']=$reviews;
+	$this['reviews2']=$reviews;
+		
+	$foodCategories = FoodCategory::where('banquet_id', $this->param('id'))->get();
+	$foodCategories2 = $foodCategories;
+	$this['foodCategories']=$foodCategories;
+	
+	$categoryIdHolder = array();
+
+	foreach($foodCategories2 as $foodCategory){
+		array_push($categoryIdHolder, $foodCategory['id']);
+	}
+
+	$foodItems = FoodItem::whereIn('food_category_id', $categoryIdHolder)->get();
+	$this['foodItems'] = $foodItems;
+
+	$user = User::where('id', 3);
+	$this['user']=$user;
+	
+}";s:5:"title";s:7:"Banquet";s:3:"url";s:10:"/:id/:slug";s:6:"layout";s:12:"master_front";s:9:"is_hidden";s:1:"0";s:10:"reviewForm";a:0:{}}}

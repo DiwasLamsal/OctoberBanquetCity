@@ -1,0 +1,86 @@
+1561542698a:1:{s:10:"search.htm";a:9:{s:8:"fileName";s:10:"search.htm";s:7:"content";s:1609:"title = "Search"
+url = "/s/:query"
+layout = "master_front"
+is_hidden = 0
+==
+<?php
+use View9\Banquet\Models\Banquet;
+
+function onStart()
+{
+	$this['search_results'] = Banquet::where('name', 'LIKE', '%'.$this->param('query').'%')->paginate('15');
+}
+?>
+==
+<section class="banquet-wrap">
+	<div class="container">
+		{% if(search_results.length == 0) %}
+		<h2>We could not find anything matching {{this.param.query}}!</h2>
+		{% else %}
+		<h2>Result for: {{this.param.query}}</h2>
+		<div class="row">
+			{% for search_result in search_results %}
+			<div class="col-sm-3 custom-gutter">
+				<div class="banquet-wrap-box">
+					<a href="{{ 'banquet-details'|page({id: search_result.id, slug: search_result.slug}) }}">
+						<img src="{{search_result.banners[0].getPath()}}" class="img-fluid">
+					</a>
+					<a href="{{ 'banquet-details'|page({id: search_result.id, slug: search_result.slug}) }}">
+						<h4>{{ search_result.name }}</h4>
+					</a>
+					<h5>{{ search_result.address }}</h5>
+					<h5>Capacity:{{ search_result.max_capacity }} Max</h5>
+					<ul>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+					</ul>
+					<div class="add-compare">
+						<a href="#">Add to Compare</a>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+</section>";s:5:"mtime";i:1556083999;s:6:"markup";s:1343:"<section class="banquet-wrap">
+	<div class="container">
+		{% if(search_results.length == 0) %}
+		<h2>We could not find anything matching {{this.param.query}}!</h2>
+		{% else %}
+		<h2>Result for: {{this.param.query}}</h2>
+		<div class="row">
+			{% for search_result in search_results %}
+			<div class="col-sm-3 custom-gutter">
+				<div class="banquet-wrap-box">
+					<a href="{{ 'banquet-details'|page({id: search_result.id, slug: search_result.slug}) }}">
+						<img src="{{search_result.banners[0].getPath()}}" class="img-fluid">
+					</a>
+					<a href="{{ 'banquet-details'|page({id: search_result.id, slug: search_result.slug}) }}">
+						<h4>{{ search_result.name }}</h4>
+					</a>
+					<h5>{{ search_result.address }}</h5>
+					<h5>Capacity:{{ search_result.max_capacity }} Max</h5>
+					<ul>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-full.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate-half.png'|theme}}" alt=""></li>
+						<li><img src="{{'assets/img/rate.png'|theme}}" alt=""></li>
+					</ul>
+					<div class="add-compare">
+						<a href="#">Add to Compare</a>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			{% endif %}
+		</div>
+</section>";s:4:"code";s:168:"use View9\Banquet\Models\Banquet;
+
+function onStart()
+{
+	$this['search_results'] = Banquet::where('name', 'LIKE', '%'.$this->param('query').'%')->paginate('15');
+}";s:5:"title";s:6:"Search";s:3:"url";s:9:"/s/:query";s:6:"layout";s:12:"master_front";s:9:"is_hidden";s:1:"0";}}

@@ -1,0 +1,10 @@
+fields:
+    name:
+        label: City
+        span: auto
+        type: text
+    district_id:
+        label: District
+        span: auto
+        showSearch: true
+        type: dropdown

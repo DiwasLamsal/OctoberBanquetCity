@@ -1,0 +1,5 @@
+fields:
+    name:
+        label: Province
+        span: full
+        type: text

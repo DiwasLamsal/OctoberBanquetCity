@@ -1,0 +1,25 @@
+1561542698a:1:{s:10:"signup.htm";a:11:{s:8:"fileName";s:10:"signup.htm";s:7:"content";s:338:"title = "Signup"
+url = "/signup"
+layout = "master_front"
+is_hidden = 0
+
+[account]
+paramCode = "code"
+forceSecure = 0
+
+[resetPassword]
+paramCode = "code"
+==
+<script src="{{ 'assets/javascript/jquery.js'|theme }}"></script>
+
+{% framework %}
+{% framework extras %}
+
+{% component 'account' %}
+{% component 'resetPassword' %}";s:5:"mtime";i:1561452964;s:6:"markup";s:170:"<script src="{{ 'assets/javascript/jquery.js'|theme }}"></script>
+
+{% framework %}
+{% framework extras %}
+
+{% component 'account' %}
+{% component 'resetPassword' %}";s:4:"code";N;s:5:"title";s:6:"Signup";s:3:"url";s:7:"/signup";s:6:"layout";s:12:"master_front";s:9:"is_hidden";s:1:"0";s:7:"account";a:2:{s:9:"paramCode";s:4:"code";s:11:"forceSecure";s:1:"0";}s:13:"resetPassword";a:1:{s:9:"paramCode";s:4:"code";}}}
